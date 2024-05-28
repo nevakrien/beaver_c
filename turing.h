@@ -8,18 +8,27 @@ typedef enum {
 	BIT_1 = 1
 } Bit;
 
+typedef enum {
+	Stay=0,
+	Right=1,
+	Left=-1,
+} MoveDir;
+
 typedef struct {
 	//2 options for each read result
 	Bit write[2];    
-	Bit move[2];     
+	MoveDir move[2];     
 	int nextState[2]; // -1 for halt
 } State;
 
-typedef struct {
-	int firstState;
-	//int length;
-	State states[];
-} TuringConfig;
+// typedef struct {
+// 	//int firstState;
+// 	//int length;
+// 	State states[];
+// } TuringConfig;
+//typedef TuringConfig *States;
+
+//#define MAX_STATES 100
 
 //infinitely extending zero padded vector
 typedef struct {
@@ -31,6 +40,8 @@ typedef struct{
 	ZVec pos;
 	ZVec neg;
 }Tape;
+
+//#define ERROR_TAPE (Tape){0}
 
 static inline Bit readZVec(ZVec* v,int index){
 	int len=v->length;
@@ -51,6 +62,8 @@ static inline Bit readZVec(ZVec* v,int index){
 }
 
 static inline void UnsafewriteZVec(ZVec* v,int index,Bit val){
+	//printf("writing:%d\n",val);
+
 	//since we already checked that we are of proper size on the read
 	v->data[index]=val;
 }
@@ -66,10 +79,10 @@ static inline Bit readTape(Tape* tape,int index){
 static inline void UnsafewriteTape(Tape* tape,int index,Bit val){
 	if(index<0){
 		index=-index-1;
-		if(index>=tape->neg->length) UNREACHABLE();
+		if(index>=tape->neg.length) UNREACHABLE();
 		return UnsafewriteZVec(&tape->neg,index,val);
 	}
-	if(index>=tape->pos->length) UNREACHABLE();
+	if(index>=tape->pos.length) UNREACHABLE();
 	return UnsafewriteZVec(&tape->pos,index,val);
 }
 
@@ -88,23 +101,35 @@ static Tape initTape(){
 	return tape;
 }
 
-//wrong needs to count 1s not steps
-int beaver(TuringConfig config,int maxSteps){
-	State state=config.states[0];
+static void freeTape(Tape tape){
+	free(tape.pos.data);
+	free(tape.neg.data);
+}
+
+int runTuring(State* states,Tape* tape,int maxSteps){
+	State state=states[0];
 	int loc=0;
 
-	Tape tape=initTape();
+	//Tape tape=initTape();
 
 	for(int i=0;i!=maxSteps;i++){
-		Bit cur=readTape(&tape,loc);
-		UnsafewriteTape(&tape,loc,state.write[cur]);
+		const Bit cur=readTape(tape,loc);
+		//printf("read:%d\n",cur);
+
+		UnsafewriteTape(tape,loc,state.write[cur]);
 		loc+=state.move[cur];
+		//printf("move:%d\n",state.move[cur]);
 
 		int stateID=state.nextState[cur];
-		if(stateID<0) return i;
-		state=config.states[stateID];
+		//printf("stateID:%d\n",stateID);
+		if(stateID<0) return 0;
+		state=states[stateID];
+		
+		#ifdef MAX_STATES
+			if(stateID>=MAX_STATES) UNREACHABLE();
+		#endif //MAX_STATES
 
 	}
-	return -1;
+	return 1;
 }
 #endif //TURING_H
