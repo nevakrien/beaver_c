@@ -21,12 +21,6 @@ typedef struct {
 	int nextState[2]; // -1 for halt
 } State;
 
-// typedef struct {
-// 	//int firstState;
-// 	//int length;
-// 	State states[];
-// } TuringConfig;
-//typedef TuringConfig *States;
 
 //#define MAX_STATES 100
 
@@ -51,10 +45,10 @@ static inline Bit readZVec(ZVec* v,int index){
 	}
 
 	
-	Bit* data=realloc(v->data,8*len);
+	Bit* data=realloc(v->data,8*len*sizeof(Bit));
 	null_check(data);
 
-	memset(data+len,0,7*len);
+	memset(data+len,0,7*len*sizeof(Bit));
 	v->length=8*len;
 	v->data=data;
 
@@ -106,7 +100,12 @@ static void freeTape(Tape tape){
 	free(tape.neg.data);
 }
 
-int runTuring(State* states,Tape* tape,int maxSteps){
+static void resetTape(Tape tape){
+	memset(tape.pos.data,0,tape.pos.length);
+	memset(tape.neg.data,0,tape.neg.length);
+}
+
+static int runTuring(const State* states,Tape* tape,int maxSteps){
 	State state=states[0];
 	int loc=0;
 
