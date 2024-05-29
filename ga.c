@@ -8,7 +8,6 @@ const int pop_size=2*half_pop_size;//must be even
 const int num_iters=1000;
 
 int main(){
-	srand(123);
 	Creature best;//we could actually just save it allways in pop[0]...
 	Creature pop[pop_size];
 
@@ -30,8 +29,8 @@ int main(){
 		//children
 		#pragma omp parallel for
 		for (int i = half_pop_size; i < pop_size-quarter_pop_size; i++) {
-            int parent1 = rand() % quarter_pop_size;  // Select parent1 from the top quarter
-            int parent2 = rand() % quarter_pop_size;  // Select parent2 from the top quarter
+            int parent1 = RNG() % quarter_pop_size;  // Select parent1 from the top quarter
+            int parent2 = RNG() % quarter_pop_size;  // Select parent2 from the top quarter
             pop[i] = MakeChild(pop[parent1], pop[parent2]);
         }
 

@@ -3,15 +3,16 @@
 #include "turing.h" //order matters we defined MAX_STATES
 #include <stdlib.h>
 
+
 //srand(123);
 static const int MAX_STEPS=10000;
 
 static Bit randomBit() {
-    return (Bit)(rand() % 2); 
+    return (Bit)(RNG() % 2); 
 }
 
 static MoveDir randomDir() {
-    int r = rand() % 3;
+    int r = RNG() % 3;
     switch (r) {
         case 0: return Stay;
         case 1: return Right;
@@ -21,7 +22,7 @@ static MoveDir randomDir() {
 }
 
 static int randomNext() {
-    return -1 + (rand() % (MAX_STATES + 1)); 
+    return -1 + (RNG() % (MAX_STATES + 1)); 
 }
 
 rank_t fitness(const DNA d){
@@ -58,7 +59,7 @@ DNA MakeRandomDNA(){
 DNA MakeKid(const DNA a,const DNA b){
 	DNA ans;
 	for(int i=0;i<MAX_STATES;i++){
-		if(rand() % 2){
+		if(RNG() % 2){
 			ans.data[i]=a.data[i];
 		}
 		else{
@@ -69,8 +70,8 @@ DNA MakeKid(const DNA a,const DNA b){
 }
 DNA Mutate(const DNA d){
 	DNA ans=d;
-	int i=rand()%MAX_STATES;
-	int j=rand()%6;
+	int i=RNG()%MAX_STATES;
+	int j=RNG()%6;
 	switch(j){
 		case 0:ans.data[i].write[0]= 1-ans.data[i].write[0];
 		case 1:ans.data[i].write[1]= 1-ans.data[i].write[1];

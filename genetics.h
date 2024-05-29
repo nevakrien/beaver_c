@@ -2,6 +2,7 @@
 #define GENETICS_H
 
 #include "user_gene.h"
+#define RNG() threadRNG()
 
 typedef struct{
 	rank_t score;
