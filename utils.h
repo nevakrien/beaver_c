@@ -5,8 +5,7 @@
 #include <stdio.h>
 
 //user optional definitions
-#define CHECK_UNREACHABLE
-#define THREADS
+#define CHECK_UNREACHABLE //puts an assert instead of ub 
 
 static inline void null_check(void* p){
 	if(p==NULL){
@@ -29,13 +28,19 @@ static inline void null_check(void* p){
 #define UNREACHABLE() (*(int*)0 = 0)
 #endif
 
-#ifdef THREADS
-
-//this would be diffrent acros translation units...
-static _Thread_local unsigned int RandSeed = 123;
-static inline int threadRNG(){
-	return rand_r(&RandSeed);
-}
-#endif //THREADS
+#if defined(__GNUC__) || defined(__clang__)
+    #include <features.h>
+    #ifdef _GNU_SOURCE
+        #define RNG() random()
+        #define SETRNG(seed) srandom((unsigned int)seed)
+    #else
+        #define RNG() rand()
+        #define SETRNG(seed) srand((unsigned int)seed)
+    #endif
+#else
+    // Fallback for other compilers
+    #define RNG() rand()
+    #define SETRNG(seed) srand((unsigned int)seed)
+#endif
 
 #endif// UTILS_H
