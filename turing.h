@@ -21,8 +21,13 @@ typedef struct {
 	int nextState[2]; // -1 for halt
 } State;
 
-
 //#define MAX_STATES 100
+
+static void print_state(State s) {
+    printf("Write bits: [%d, %d]\n", s.write[0], s.write[1]);
+    printf("Move directions: [%d, %d]\n", s.move[0], s.move[1]);
+    printf("Next states: [%d, %d]\n", s.nextState[0], s.nextState[1]);
+}
 
 //infinitely extending zero padded vector
 typedef struct {
@@ -34,6 +39,18 @@ typedef struct{
 	ZVec pos;
 	ZVec neg;
 }Tape;
+
+static void print_tape(Tape tape){
+	printf("[");
+	for(int i=tape.neg.length-1;i>=0;i--){
+		printf("%d,",tape.neg.data[i]);
+	}
+	for(int i=0;i<tape.pos.length;i++){
+		printf("%d,",tape.pos.data[i]);
+	}
+
+	printf("]\n");
+}
 
 //#define ERROR_TAPE (Tape){0}
 

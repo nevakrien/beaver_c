@@ -83,5 +83,15 @@ DNA Mutate(const DNA d){
 	return ans;
 }
 
-
-
+void OutputCreature(const Creature c){
+	printf("best fit:\nscore:%d\n\n",c.score);
+	for(int i=0;i<MAX_STATES;i++){
+		print_state(c.dna.data[i]);
+		printf("\n");
+	}
+	printf("tape:\n");
+	Tape tape=initTape();
+	runTuring(c.dna.data,&tape,MAX_STEPS);
+	print_tape(tape);
+	freeTape(tape);
+}
