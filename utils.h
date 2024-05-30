@@ -14,7 +14,7 @@ static inline void null_check(void* p){
 	}
 }
 
-
+#define max(a, b) ((a) > (b) ? (a) : (b))
 
 #if defined(CHECK_UNREACHABLE)
 #include <assert.h>

@@ -19,6 +19,9 @@ void OutputCreature(const Creature c);//this is used to give the best fit to use
 #ifndef STACK_DNA
 void freeDNA(DNA d);
 DNA CloneDNA(const DNA d);
+
+int SerializeDNA(const DNA d,char** data); //try andalso alocate bytes for rank if you can
+DNA DeserializeDNA(char* data,int length);
 #else 
 static inline void freeDNA(DNA d) {
     // No-op when using STACK_DNA

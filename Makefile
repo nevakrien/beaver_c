@@ -5,7 +5,7 @@
 CC=gcc
 
 #
-OPT_FLAG=-O3 -g -flto
+OPT_FLAG=-g2 -flto
 # Base Compiler flags for object files
 CFLAGS=-c $(OPT_FLAG) -Wall
 
@@ -17,7 +17,7 @@ ARFLAGS=rcs
 LDFLAGS=$(OPT_FLAG)
 
 # Default target
-all: single_threaded parallel_for test_turing
+all: single_threaded mpi test_turing
 
 # Compile user_gene.c to user_gene.o
 user_gene.o: user_gene.c
@@ -31,10 +31,13 @@ test_turing: test_turing.c user_gene.o
 single_threaded:  user_gene.o 
 	$(CC) $(LDFLAGS) ga.c user_gene.o  -o single_threaded 
 
+mpi:  user_gene.o 
+	$(CC) $(LDFLAGS) mpi_ga.c user_gene.o -lmpi  -o mpi 
+
 # parallel_for: user_gene.o
 # 	$(CC) $(LDFLAGS) ga.c user_gene.o -fopenmp -o parallel_for 
 
 # Clean the build
 clean:
-	rm -f user_gene.o  test_turing ga 
+	rm -f user_gene.o  test_turing mpi
 	#parallel_for

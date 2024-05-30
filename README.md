@@ -20,3 +20,6 @@ these should be provided in user_gene.h and implemented in user_gene.c
 for DNA thats a stack object simply #define STACK_DNA
 
 GA and potentially mpi and slurm 
+
+# test
+valgrind --suppressions=mpi-suppressions.supp mpirun -np 4 ./mpi

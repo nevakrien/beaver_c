@@ -1,0 +1,5 @@
+{
+   Memcheck:IgnoreInvalidFd
+   fun:close
+   obj:/opt/intel/oneapi/mpi/2021.11/bin/mpirun
+}
