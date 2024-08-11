@@ -91,10 +91,12 @@ static inline void UnsafewriteTape(Tape* tape,int index,Bit val){
 	if(index<0){
 		index=-index-1;
 		if(index>=tape->neg.length) UNREACHABLE();
-		return UnsafewriteZVec(&tape->neg,index,val);
+		UnsafewriteZVec(&tape->neg,index,val);
+		return;
 	}
 	if(index>=tape->pos.length) UNREACHABLE();
-	return UnsafewriteZVec(&tape->pos,index,val);
+	UnsafewriteZVec(&tape->pos,index,val);
+	return;
 }
 
 static Tape initTape(){

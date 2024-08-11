@@ -2,10 +2,10 @@
 #include "genetics.h"
 #include "opt.h"
 
-const int quarter_pop_size=25;
-const int half_pop_size=2*quarter_pop_size;
-const int pop_size=2*half_pop_size;//must be even
-const int num_iters=1000;
+#define  quarter_pop_size 25
+#define  half_pop_size 2*quarter_pop_size
+#define  pop_size 2*half_pop_size//must be even
+#define  num_iters 1000
 
 int main(){
 	SETRNG(123);

@@ -27,7 +27,7 @@ static inline void freeDNA(DNA d) {
     // No-op when using STACK_DNA
     (void)d; // To avoid unused parameter warning
 }
-static inline DNA CloneDNA(const DNA d){return d;};
+static inline DNA CloneDNA(const DNA d){return d;}
 #endif
 
 

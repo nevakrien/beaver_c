@@ -2,10 +2,10 @@
 # and compile and link test_turing.c into an executable with debugging information
 
 # Compiler to use
-CC=gcc
+CC=cproc#tcc#clang#gcc
 
 #
-OPT_FLAG=-g2 -flto
+OPT_FLAG=-g2 #-flto
 # Base Compiler flags for object files
 CFLAGS=-c $(OPT_FLAG) -Wall
 
@@ -17,7 +17,7 @@ ARFLAGS=rcs
 LDFLAGS=$(OPT_FLAG)
 
 # Default target
-all: single_threaded mpi test_turing
+all: single_threaded test_turing #mpi
 
 # Compile user_gene.c to user_gene.o
 user_gene.o: user_gene.c
@@ -39,5 +39,8 @@ mpi:  user_gene.o
 
 # Clean the build
 clean:
-	rm -f user_gene.o  test_turing mpi
+	rm -f user_gene.o  test_turing mpi single_threaded
 	#parallel_for
+check: clean 
+	make all
+	./test_turing

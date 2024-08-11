@@ -25,6 +25,14 @@ static int randomNext() {
     return -1 + (RNG() % (MAX_STATES + 1)); 
 }
 
+static inline int findSum(ZVec v){
+	int score=0;
+	for(int i=0;i<v.length;i++){
+		score+=v.data[i];
+	}
+	return score;
+}
+
 rank_t fitness(const DNA d){
 	Tape tape=initTape();
 	if(runTuring(d.data,&tape,MAX_STEPS)){
@@ -32,13 +40,7 @@ rank_t fitness(const DNA d){
 		return -1;
 	}
 
-	inline int findSum(ZVec v){
-		int score=0;
-		for(int i=0;i<v.length;i++){
-			score+=v.data[i];
-		}
-		return score;
-	}
+	
 	rank_t ans= findSum(tape.pos)+findSum(tape.neg);
 	freeTape(tape);
 	return ans;
