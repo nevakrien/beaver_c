@@ -2,10 +2,10 @@
 # and compile and link test_turing.c into an executable with debugging information
 
 # Compiler to use
-CC=cproc#tcc#clang#gcc
+CC=zig cc#gcc-14#zig cc#cproc#tcc#clang#gcc
 
 #
-OPT_FLAG=-g2#-flto
+OPT_FLAG=-O2 #-march=native #-static -pthread#-flto
 # Base Compiler flags for object files
 CFLAGS=-c $(OPT_FLAG) -Wall
 
@@ -33,4 +33,5 @@ clean:
 
 check: clean 
 	make all
-	valgrind ./test_turing
+	#valgrind ./test_turing #acts weird with static links]
+	./test_turing
